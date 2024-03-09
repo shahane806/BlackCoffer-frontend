@@ -3,7 +3,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { fetchDataRoute } from "../../Api/apiRoutes";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EndYearFilter from "../../Filters/EndYearFilterMenu";
 import SourceFilter from "../../Filters/SourceFilterMenu";
 import TopicFilter from "../../Filters/TopicFilterMenu";
@@ -15,23 +15,17 @@ import IntensityFilter from "../../Filters/IntensityFilterMenu";
 import CityFilter from "../../Filters/CityFilterMenu";
 import FilterLebals2 from "./FilterLebals2";
 let data = [];
-function setData(d) {
-  data = d;
-}
+
 const FilterForm = (props) => {
   const [v, setValue] = useState("");
 
   const [menuItems, setMenuItems] = useState([]);
   const [filteredMenu, setfilteredMenu] = useState([]);
-  const dispatch = useDispatch();
+  data = useSelector((state) => {
+    return state?.dataReducer;
+  });
   useEffect(() => {
-    const d = fetchDataRoute();
-    d?.then((res) => res?.data?.data)?.then((res) => {
-      setData(res);
-    });
-  }, []);
-
-  useEffect(() => {
+   
     menuItems[0] = EndYearFilter(data);
     menuItems[1] = SourceFilter(data);
     menuItems[2] = TopicFilter(data);
@@ -41,12 +35,6 @@ const FilterForm = (props) => {
     menuItems[6] = CountryFilter(data);
     menuItems[7] = IntensityFilter(data);
     menuItems[8] = CityFilter(data);
-  }, [data]);
-  useEffect(() => {
-    dispatch({
-      type: "fetchData",
-      payload: data,
-    });
   }, [data]);
 
   useEffect(() => {

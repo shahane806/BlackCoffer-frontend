@@ -28,7 +28,7 @@ import {
   CountryFilter,
 } from "../Filters/filter";
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
     ...theme.typography.body2,
@@ -39,8 +39,6 @@ const Dashboard = () => {
   const [width, setWidth] = useState("70%");
   const [height, setHeight] = useState(0);
   const [spacing, setSpacing] = useState(2);
-
-  const [filterValue, setFilterValue] = useState([]);
 
   // eslint-disable-next-line
 
@@ -54,7 +52,6 @@ const Dashboard = () => {
       ? setSpacing(5)
       : setSpacing(2);
     setFilter();
-
     // eslint-disable-next-line
   }, []);
 
@@ -104,17 +101,10 @@ const Dashboard = () => {
   const [title, setTitle] = useState([]);
   const [country, setCountry] = useState([]);
   let [d2, setD2] = useState([]);
-  let [timeoutid, setTimeoutid] = useState(0);
-  timeoutid = setTimeout(
-    () => {
-      setD2(getData());
-    },
-    1000,
-    timeoutid
-  );
-  if (timeoutid > 5) {
-    clearTimeout(timeoutid);
-  }
+  useEffect(() => {
+    setD2(props?.data);
+  }, [props?.data]);
+
   useEffect(() => {
     setCountry(LOD?.Country(d2));
     setEndYear(LOD?.EndYear(d2));
@@ -133,9 +123,9 @@ const Dashboard = () => {
     setPestle(LOD?.Pestle(d2));
     setInsight(LOD?.Insight(d2));
     setTopic(LOD?.Topic(d2));
-   
-    if(d2.length == 0 ){
-      setD2(getData())
+
+    if (d2.length == 0) {
+      setD2(props?.data);
     }
     // eslint-disable-next-line
   }, [d2]);
@@ -165,9 +155,7 @@ const Dashboard = () => {
       setDisablePrev(true);
       setCount(limit);
       setJ(0);
-    }
-
-    else {
+    } else {
       setI(--i);
 
       setCount(count - limit);
@@ -186,7 +174,6 @@ const Dashboard = () => {
       setDisableNext(false);
       setDisablePrev(false);
     }
-   
   };
   useEffect(() => {
     if (j === 0 && count === limit) {
@@ -229,18 +216,17 @@ const Dashboard = () => {
     IntensityFilter(d2).length != 0 && val.push(IntensityFilter(d2));
     CityFilter(d2).length != 0 && val.push(CityFilter(d2));
     let all = [];
-    val.map((e,i)=>{
-      e.map((e)=>{
-        all.push(e)
-      })
-    })
-    setD2(all)
+    val.map((e, i) => {
+      e.map((e) => {
+        all.push(e);
+      });
+    });
+    setD2(all);
     setCount(1);
     setLimit(1);
     setI(0);
     setJ(0);
 
-    setFilterValue([]);
     setFilterSet(!filterSet);
   };
   const resetFilter = () => {
@@ -249,8 +235,7 @@ const Dashboard = () => {
     setLimit(1);
     setI(0);
     setJ(0);
-    setD2(getData());
-    setFilterValue([]);
+    setD2(props?.data);
   };
 
   const dstyle = {

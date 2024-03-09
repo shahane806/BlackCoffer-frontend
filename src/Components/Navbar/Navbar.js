@@ -18,7 +18,7 @@ const Navbar = () => {
       <AppBar position="static" style={{backgroundColor:"#fffcfc" , boxShadow:"none" ,borderBottom:"1px solid #edebeb" , zIndex:"999"}}>
         <Toolbar >
           <MenuIcon onClick={handleClick} style={{ cursor: "pointer" , filter:"invert(5)" }} />
-          <h3 style={{marginLeft:"10px" ,color:"black"}}>BlackCoffer Dashboard</h3>
+          <h3 style={{marginLeft:"10px" ,color:"black"}}>DataCrush Dashboard</h3>
         </Toolbar>
       </AppBar>
     </Box>
